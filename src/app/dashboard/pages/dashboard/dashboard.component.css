@@ -1,0 +1,22 @@
+.sidebar {
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  padding-top: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar .nav-link {
+  color: #333;
+  font-weight: 500;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.main {
+  margin-left: 250px; /* Ajusta según el ancho de la barra lateral */
+}

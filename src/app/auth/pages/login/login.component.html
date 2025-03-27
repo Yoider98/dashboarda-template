@@ -1,0 +1,151 @@
+<div class="login-container">
+  <div class="login-box">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button (click)="isLogin = true" [ngClass]="{ active: isLogin }">
+        Iniciar sesion
+      </button>
+      <button (click)="isLogin = false" [ngClass]="{ active: !isLogin }">
+        Registrarse
+      </button>
+    </div>
+
+    <!-- Avatar -->
+    <div class="avatar">
+      <img
+        *ngIf="!isLogin; else defaultAvatar"
+        src="../../../../assets/img/register.png"
+        alt="User Avatar"
+      />
+      <ng-template #defaultAvatar>
+        <img
+          src="../../../../assets/img/usuario.png"
+          alt="Default User Avatar"
+        />
+      </ng-template>
+    </div>
+
+    <!-- Título dinámico -->
+    <h2>{{ isLogin ? "Iniciar sesion" : "Registrarse" }}</h2>
+
+    <!-- Formulario de Login -->
+    <form *ngIf="isLogin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input
+          type="email"
+          placeholder="Username or e-mail"
+          formControlName="email"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+      </div>
+
+      <div class="options">
+        <label class="checkbox-container">
+          <input type="checkbox" />
+          <span class="checkmark"></span>
+          Recordarme
+        </label>
+        <a (click)="openForgotPasswordModal()">Recuperar contraseña</a>
+      </div>
+
+      <!-- Modal de recuperación de contraseña -->
+      <div class="modal" [class.show]="showModal">
+        <div class="modal-content">
+          <span class="close" (click)="closeForgotPasswordModal()"
+            >&times;</span
+          >
+          <h2>Recuperar contraseña</h2>
+          <p>Ingresa tu correo electrónico para restablecer tu contraseña.</p>
+          <form (ngSubmit)="sendPasswordReset()">
+            <input
+              name="resetEmail"
+              type="email"
+              [(ngModel)]="resetEmail"
+              placeholder="Correo electrónico"
+              required
+            />
+            <button type="submit" class="btn-primary">Restablecer</button>
+          </form>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">
+        Iniciar sesion
+      </button>
+
+      <p class="register-link">
+        <a (click)="toggleForm()">
+          ¿No tienes una cuenta? <strong>Registrarse</strong></a
+        >
+      </p>
+    </form>
+
+    <!-- Formulario de Registro -->
+    <form *ngIf="!isLogin" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input
+          type="text"
+          placeholder="Full Name"
+          formControlName="name"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input
+          type="email"
+          placeholder="Email"
+          formControlName="email"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          formControlName="confirmPassword"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="registerForm.invalid"
+      >
+        Register
+      </button>
+
+      <p class="register-link">
+        <a (click)="toggleForm()"
+          >¿Ya tienes una cuenta? <strong>Iniciar sesion</strong></a
+        >
+      </p>
+    </form>
+  </div>
+</div>

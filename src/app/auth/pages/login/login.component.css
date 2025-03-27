@@ -1,0 +1,248 @@
+/* Variables */
+:root {
+  --primary-color: #3498db;
+  --background-color: #f4f6f9;
+  --box-shadow-color: rgba(0, 0, 0, 0.1);
+  --border-radius: 15px;
+}
+
+/* Contenedor principal */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--primary-color);
+}
+
+/* Caja del formulario */
+.login-box {
+  width: 350px;
+  padding: 30px;
+  background: #ebebeb;
+  box-shadow: 0px 4px 10px var(--box-shadow-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+  position: relative;
+}
+
+/* Estilos de las pestañas */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background: var(--background-color);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+.tabs button {
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+  color: gray;
+}
+
+.tabs button.active {
+  color: var(--primary-color);
+}
+
+/* Avatar */
+.avatar {
+  margin: 20px auto;
+  width: 80px;
+  height: 80px;
+  background: #f1f1f1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  width: 50px;
+}
+
+/* Estilos de inputs */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 30px;
+  margin: 10px 0;
+}
+
+.input-group i {
+  margin: 0 10px;
+  color: gray;
+}
+
+.input-group input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 8px;
+}
+
+/* Recordar contraseña */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+.options a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+/* Botón */
+.btn-primary {
+  background: gray;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  border-radius: 30px;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: #217dbb;
+}
+
+/* Estilos del enlace de registro */
+.register-link {
+  margin-top: 15px;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Estilos del enlace dentro del párrafo */
+.register-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Cambiar color en hover sin modificar otros estilos */
+.register-link a:hover {
+  color: rgb(0, 166, 255);
+  text-decoration: underline;
+}
+/* Contenedor de opciones */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin: 15px 0;
+}
+
+/* Estilo del checkbox personalizado */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #3498db;
+  border-radius: 4px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox-container input:checked + .checkmark {
+  background-color: #3498db;
+}
+
+.checkbox-container input:checked + .checkmark::after {
+  content: "✔";
+  color: white;
+  font-size: 12px;
+}
+
+/* Enlace de recuperación de contraseña */
+.options a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.options a:hover {
+  color: rgb(0, 166, 255);
+  text-decoration: underline;
+}
+
+/* Modal de recuperación */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.modal-content h2 {
+  margin-bottom: 10px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-content .btn-primary {
+  margin-top: 15px;
+  width: 100%;
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 18px;
+  cursor: pointer;
+}
