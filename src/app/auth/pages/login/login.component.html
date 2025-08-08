@@ -29,30 +29,50 @@
     <h2>{{ isLogin ? "Iniciar sesion" : "Registrarse" }}</h2>
 
     <!-- Formulario de Login -->
-    <form *ngIf="isLogin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form *ngIf="isLogin" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
       <div class="input-group">
         <i class="fas fa-user"></i>
         <input
           type="email"
           placeholder="Username or e-mail"
           formControlName="email"
-          required
         />
       </div>
 
       <div class="input-group">
         <i class="fas fa-lock"></i>
         <input
-          type="password"
+          [type]="showPassword ? 'text' : 'password'"
           placeholder="Password"
           formControlName="password"
-          required
         />
+        <i
+          class="fas"
+          [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+          (click)="showPassword = !showPassword"
+          style="cursor: pointer; margin-left: -30px"
+        ></i>
       </div>
+      <!--
+      <div *ngIf="errorMessage" class="error-message">
+        <p>{{ errorMessage }}</p>
+      </div> -->
 
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="loginForm.invalid || loading"
+      >
+        Iniciar sesión
+      </button>
       <div class="options">
         <label class="checkbox-container">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            [(ngModel)]="rememberMe"
+            name="rememberMe"
+            [ngModelOptions]="{ standalone: true }"
+          />
           <span class="checkmark"></span>
           Recordarme
         </label>
@@ -73,79 +93,150 @@
               type="email"
               [(ngModel)]="resetEmail"
               placeholder="Correo electrónico"
-              required
             />
             <button type="submit" class="btn-primary">Restablecer</button>
           </form>
         </div>
       </div>
-
-      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">
-        Iniciar sesion
-      </button>
-
       <p class="register-link">
-        <a (click)="toggleForm()">
-          ¿No tienes una cuenta? <strong>Registrarse</strong></a
+        <a (click)="toggleForm()"
+          >¿No tienes una cuenta? <strong>Registrarse</strong></a
         >
       </p>
     </form>
 
     <!-- Formulario de Registro -->
-    <form *ngIf="!isLogin" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form
+      *ngIf="!isLogin"
+      [formGroup]="registerForm"
+      (ngSubmit)="onRegisterSubmit()"
+    >
+      <!-- Full Name -->
       <div class="input-group">
         <i class="fas fa-user"></i>
-        <input
-          type="text"
-          placeholder="Full Name"
-          formControlName="name"
-          required
-        />
+        <input type="text" placeholder="Full Name" formControlName="name" />
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          registerForm.get('name')?.touched && registerForm.get('name')?.invalid
+        "
+      >
+        <span *ngIf="registerForm.get('name')?.errors?.required"
+          >El nombre es obligatorio.</span
+        >
+        <span *ngIf="registerForm.get('name')?.errors?.minlength"
+          >Debe tener al menos 3 caracteres.</span
+        >
       </div>
 
+      <!-- Email -->
       <div class="input-group">
         <i class="fas fa-envelope"></i>
-        <input
-          type="email"
-          placeholder="Email"
-          formControlName="email"
-          required
-        />
+        <input type="email" placeholder="Email" formControlName="email" />
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          registerForm.get('email')?.touched &&
+          registerForm.get('email')?.invalid
+        "
+      >
+        <span *ngIf="registerForm.get('email')?.errors?.required"
+          >El correo es obligatorio.</span
+        >
+        <span *ngIf="registerForm.get('email')?.errors?.email"
+          >Correo inválido.</span
+        >
       </div>
 
+      <!-- Password -->
       <div class="input-group">
         <i class="fas fa-lock"></i>
         <input
+          [type]="showPassword ? 'text' : 'password'"
           type="password"
           placeholder="Password"
           formControlName="password"
-          required
-        />
+        /><i
+          class="fas"
+          [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+          (click)="showPassword = !showPassword"
+          style="cursor: pointer; margin-left: -30px"
+        ></i>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          registerForm.get('password')?.touched &&
+          registerForm.get('password')?.invalid
+        "
+      >
+        <span *ngIf="registerForm.get('password')?.errors?.required"
+          >La contraseña es obligatoria.</span
+        >
+        <span *ngIf="registerForm.get('password')?.errors?.passwordInvalid">
+          La contraseña debe tener al menos 8 caracteres, incluyendo letras y
+          números.
+        </span>
       </div>
 
+      <!-- Confirm Password -->
       <div class="input-group">
         <i class="fas fa-lock"></i>
         <input
+          [type]="showConfirmPassword ? 'text' : 'password'"
           type="password"
           placeholder="Confirm Password"
           formControlName="confirmPassword"
-          required
         />
+        <i
+          class="fas"
+          [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"
+          (click)="showConfirmPassword = !showConfirmPassword"
+          style="cursor: pointer; margin-left: -30px"
+        ></i>
+      </div>
+      <div
+        class="error-message"
+        *ngIf="
+          registerForm.get('confirmPassword')?.touched &&
+          registerForm.get('confirmPassword')?.invalid
+        "
+      >
+        <span *ngIf="registerForm.get('confirmPassword')?.errors?.required"
+          >Confirma tu contraseña.</span
+        >
+        <span *ngIf="registerForm.get('confirmPassword')?.errors?.mismatch"
+          >Las contraseñas no coinciden.</span
+        >
       </div>
 
-      <button
-        type="submit"
-        class="btn-primary"
-        [disabled]="registerForm.invalid"
-      >
-        Register
+      <!-- Submit -->
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        Registrarse
       </button>
 
+      <!-- Toggle to Login -->
       <p class="register-link">
         <a (click)="toggleForm()"
-          >¿Ya tienes una cuenta? <strong>Iniciar sesion</strong></a
+          >¿Ya tienes una cuenta? <strong>Iniciar sesión</strong></a
         >
       </p>
     </form>
+  </div>
+</div>
+<div class="notification success" *ngIf="showSuccessNotification">
+  ✅ Registro exitoso
+</div>
+<div *ngIf="loading" class="loading-overlay">
+  <div class="loading-spinner"></div>
+  <p>Cargando...</p>
+</div>
+<div *ngIf="showErrorModal" class="error-modal">
+  <div class="error-modal-content">
+    <span class="closeError" (click)="closeModal()">&times;</span>
+    <h2>Error</h2>
+    <p>{{ errorMessage }}</p>
   </div>
 </div>

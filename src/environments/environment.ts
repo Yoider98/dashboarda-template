@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: "http://127.0.0.1:3000/",
+  apiUrl: "https://api-template-0avi.onrender.com/",
+  //apiUrl: "http://127.0.0.1:3000",
 };

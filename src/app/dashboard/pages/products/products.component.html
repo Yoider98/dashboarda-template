@@ -1,7 +1,34 @@
-<p>
-  products works! Do irure et laboris deserunt ipsum reprehenderit sit
-  incididunt laborum non amet elit. Aute consectetur ea laboris proident ipsum
-  aliqua cillum duis commodo dolore magna culpa ex. Sint deserunt ipsum culpa
-  sunt aute nostrud veniam tempor culpa minim est aliquip mollit. Esse amet qui
-  incididunt sint ad duis. Fugiat dolor est consequat eu consectetur.
-</p>
+<div class="container">
+  <h2>Lista de Productos</h2>
+  <a routerLink="/dashboard/products/create" class="btn btn-primary mb-3"
+    >Crear Producto</a
+  >
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td>{{ product.price | currency }}</td>
+        <td>
+          <a
+            [routerLink]="['/dashboard/products/edit', product.id]"
+            class="btn btn-warning btn-sm"
+            >Editar</a
+          >
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="deleteProduct(product.id)"
+          >
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
