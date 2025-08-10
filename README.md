@@ -30,9 +30,11 @@ src/
 │   │   └── services/            # Servicios principales
 │   ├── dashboard/               # Módulo principal del dashboard
 │   │   ├── pages/
-│   │   │   ├── dashboard/       # Página principal
-│   │   │   ├── products/        # Gestión de productos
-│   │   │   └── users/           # Gestión de usuarios
+│   │   │   ├── dashboard/       # Layout (sidebar + contenido)
+│   │   │   ├── home/            # Inicio del dashboard
+│   │   │   ├── products/        # Gestión de productos (lista + crear/editar)
+│   │   │   ├── users/           # Gestión de usuarios (lista + crear/editar)
+│   │   │   └── profile/         # Mi perfil (usuario logueado)
 │   │   └── dashboard-routing.module.ts
 │   ├── pages/
 │   │   └── not-found/           # Página 404
@@ -50,11 +52,14 @@ src/
 - **`/**`** → Redirige a `/404` (rutas inexistentes)
 
 ### Rutas del Dashboard (Protegidas por AuthGuard)
-- **`/dashboard`** → Página principal del dashboard
+- **`/dashboard`** → Inicio del dashboard
 - **`/dashboard/products`** → Lista de productos
 - **`/dashboard/products/create`** → Crear nuevo producto
 - **`/dashboard/products/edit/:id`** → Editar producto existente
 - **`/dashboard/users`** → Gestión de usuarios
+- **`/dashboard/users/create`** → Crear usuario
+- **`/dashboard/users/edit/:id`** → Editar usuario
+- **`/dashboard/profile`** → Mi perfil (usuario logueado)
 
 ### Rutas de Autenticación
 - **`/auth`** → Página de login
@@ -83,7 +88,13 @@ src/
 
 ### Gestión de Usuarios
 - **Listar usuarios** - Vista de todos los usuarios
-- **Gestión de perfiles** - Información de usuarios
+- **Crear usuario** - Formulario para nuevos usuarios
+- **Editar usuario** - Modificación de usuarios existentes
+- **Eliminar usuario** - Eliminación de usuarios
+
+### Mi Perfil
+- **Ver perfil** - Datos del usuario logueado
+- **Editar perfil** - Actualización de datos personales
 
 ### Componentes Compartidos
 - **Modal Message** - Componente modal reutilizable
@@ -94,14 +105,13 @@ src/
 
 ### Características
 - **Diseño responsivo** con Bootstrap 5
-- **Sidebar** con navegación lateral
-- **Navbar** con menú de usuario
+- **Navbar** mejorada con dropdown de usuario y avatar
+- **Sidebar** mejorado: colapsable en escritorio y offcanvas en móvil
 - **Iconos FontAwesome** para mejor UX
-- **Componentes Material Design**
+- **Formularios reactivos** con validaciones y feedback en vivo
 
 ### Navegación
-- **Menú lateral** con opciones principales
-- **Breadcrumbs** para navegación
+- **Menú lateral** con opciones principales, colapsable (escritorio) y offcanvas (móvil)
 - **Enlaces activos** con indicadores visuales
 
 ## 🔧 Configuración del Entorno
@@ -116,13 +126,12 @@ export const environment = {
 };
 ```
 
-### API Endpoints
+### API Endpoints (principales)
 - **Base URL**: `https://api-template-0avi.onrender.com/`
-- **Login**: `POST /login`
-- **Signup**: `POST /signup`
-- **Reset Password**: `POST /reset-password`
-- **User Profile**: `GET /user/profile`
-- **Products**: `GET/POST/PUT/DELETE /products`
+- **Auth**: `POST /login`, `POST /signup`, `POST /reset-password`
+- **Mi Perfil**: `GET /user/profile`, `PUT /user/profile`
+- **Usuarios**: `GET/POST/PUT/DELETE /users`
+- **Productos**: `GET/POST/PUT/DELETE /products`
 
 ## 🚀 Instalación y Ejecución
 
