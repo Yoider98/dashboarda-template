@@ -1,0 +1,174 @@
+
+/* ====== Tarjeta principal ====== */
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .card-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 12px 12px 0 0;
+  }
+  
+  .card-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  
+  .card-header .btn {
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  
+  /* ====== Filtros ====== */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-label {
+    font-weight: 600;
+    color: #495057;
+  }
+  
+  .form-control,
+  .form-select {
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* ====== Tabla ====== */
+  .table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+  }
+  
+  .table thead th {
+    background-color: #f8f9fa;
+    border-bottom: none;
+    font-weight: 600;
+  }
+  
+  .table tbody tr {
+    background: white;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .table tbody tr:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* ====== Imagen del producto ====== */
+  .product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+  }
+  
+  /* ====== Info de producto ====== */
+  .product-info strong {
+    display: block;
+    font-size: 0.95rem;
+  }
+  
+  .product-info small {
+    font-size: 0.8rem;
+  }
+  
+  /* ====== Precio ====== */
+  .price-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .original-price {
+    text-decoration: line-through;
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+  
+  .current-price {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  
+  .current-price.discount {
+    color: #dc3545;
+  }
+  
+  .discount-badge {
+    background: #dc3545;
+    color: white;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-top: 2px;
+    display: inline-block;
+  }
+  
+  /* ====== Stock ====== */
+  .stock-info span {
+    font-weight: 600;
+  }
+  
+  .stock-low {
+    color: #dc3545;
+  }
+  
+  .stock-medium {
+    color: #ffc107;
+  }
+  
+  .stock-high {
+    color: #28a745;
+  }
+  
+  /* ====== Botones de acción ====== */
+  .btn-group .btn {
+    border-radius: 6px;
+    padding: 0.35rem 0.6rem;
+  }
+  
+  .btn-warning {
+    background-color: #ffc107;
+    border: none;
+  }
+  
+  .btn-info {
+    background-color: #17a2b8;
+    border: none;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border: none;
+  }
+  
+  /* ====== Paginación ====== */
+  .pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 6px;
+  }
+  
+  .pagination .page-link {
+    border-radius: 6px;
+    margin: 0 2px;
+    color: #007bff;
+  }
+  
+  /* ====== Mensaje vacío ====== */
+  .text-center i {
+    opacity: 0.6;
+  }
+  
+  .btn-primary i {
+    margin-right: 4px;
+  }
+  

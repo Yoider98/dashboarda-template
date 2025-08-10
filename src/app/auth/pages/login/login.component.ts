@@ -91,25 +91,24 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
-    this.authService.login({ email, password }).subscribe(
-      (response) => {
+    this.authService.loginWithTokens({ email, password }).subscribe({
+      next: (response) => {
         this.loading = false;
         if (response && response.token) {
-          localStorage.setItem("token", response.token);
           this.router.navigate(["/dashboard"]);
         } else if (response && response.error) {
           console.log("Error de inicio de sesión:", response);
           this.showError(response.error.message || "Error de inicio de sesión");
         }
       },
-      (error) => {
+      error: (error) => {
         this.loading = false;
         this.showError(
-          error.error.error.message || "Error de inicio de sesión"
+          error.error.error.message || error.message || "Error de inicio de sesión"
         );
         console.error(error);
       }
-    );
+    });
   }
   onRegisterSubmit() {
     console.log("Formulario de registro:", this.registerForm.value);
@@ -134,7 +133,7 @@ export class LoginComponent {
     this.authService.register({ name, email, password }).subscribe(
       (response) => {
         this.loading = false;
-        if (response && response.status) {
+        if (response && typeof response.token === 'string' && response.token.trim() !== '') {
           this.toggleForm(); // Cambiar a formulario de login si deseas
           this.registerForm.reset();
           this.showSuccessNotification = true;

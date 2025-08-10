@@ -1,41 +1,231 @@
-<div class="container">
-  <h2>{{ isEditMode ? "Editar Producto" : "Crear Producto" }}</h2>
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Nombre</label>
-      <input
-        id="name"
-        type="text"
-        class="form-control"
-        formControlName="name"
-        placeholder="Nombre del producto"
-      />
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2 class="mb-0"><i class="fas fa-box me-2"></i>{{ isEditMode ? 'Editar Producto' : 'Crear Producto' }}</h2>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-secondary" (click)="goBack()">
+                <i class="fas fa-arrow-left me-1"></i> Volver a la lista
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="row g-4">
+              <div class="col-lg-8">
+                <div class="card shadow-sm h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-muted text-uppercase mb-3">Información básica</h5>
+
+                    <div class="mb-3">
+                      <label for="name" class="form-label">Nombre <span class="text-danger">*</span></label>
+                      <input id="name" type="text" class="form-control" formControlName="name"
+                        placeholder="Nombre del producto"
+                        [ngClass]="{'is-invalid': productForm.get('name').invalid && productForm.get('name').touched}" />
+                      <div class="invalid-feedback">{{ getErrorMessage('name') }}</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <label for="sku" class="form-label">SKU <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                          <input id="sku" type="text" class="form-control" formControlName="sku"
+                            placeholder="SKU (ej: CAT-NOMBRE-0001)"
+                            [ngClass]="{'is-invalid': productForm.get('sku').invalid && productForm.get('sku').touched}" />
+                          <button class="btn btn-outline-secondary" type="button" (click)="generateSKU()">
+                            <i class="fas fa-magic"></i>
+                          </button>
+                          <div class="invalid-feedback d-block">{{ getErrorMessage('sku') }}</div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="category" class="form-label">Categoría <span class="text-danger">*</span></label>
+                        <select id="category" class="form-select" formControlName="category"
+                          [ngClass]="{'is-invalid': productForm.get('category').invalid && productForm.get('category').touched}">
+                          <option value="">Selecciona una categoría</option>
+                          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                        </select>
+                        <div class="invalid-feedback">{{ getErrorMessage('category') }}</div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="tags" class="form-label">Tags</label>
+                      <input id="tags" type="text" class="form-control" formControlName="tags"
+                        placeholder="Ej: nuevo, oferta, destacado" />
+                      <small class="text-muted">Sepáralos por coma</small>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="description" class="form-label">Descripción <span class="text-danger">*</span></label>
+                      <textarea id="description" class="form-control" rows="5" formControlName="description"
+                        placeholder="Descripción detallada del producto"
+                        [ngClass]="{'is-invalid': productForm.get('description').invalid && productForm.get('description').touched}"></textarea>
+                      <div class="invalid-feedback">{{ getErrorMessage('description') }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="card shadow-sm h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-muted text-uppercase mb-3">Precio y descuentos</h5>
+
+                    <div class="mb-3">
+                      <label for="price" class="form-label">Precio <span class="text-danger">*</span></label>
+                      <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                        <input id="price" type="number" class="form-control" formControlName="price" min="0" step="0.01"
+                          [ngClass]="{'is-invalid': productForm.get('price').invalid && productForm.get('price').touched}" />
+                      </div>
+                      <div class="invalid-feedback d-block">{{ getErrorMessage('price') }}</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-6 mb-3">
+                        <label for="discountPrice" class="form-label">Precio con descuento</label>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                          <input id="discountPrice" type="number" class="form-control" formControlName="discountPrice"
+                            min="0" step="0.01" (input)="calculateDiscountPercentage()" />
+                        </div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label for="discountPercentage" class="form-label">% Descuento</label>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="fas fa-percent"></i></span>
+                          <input id="discountPercentage" type="number" class="form-control"
+                            formControlName="discountPercentage" min="0" max="100" step="1"
+                            (input)="calculateDiscountPrice()" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-6 mb-3">
+                        <label for="discountStartDate" class="form-label">Desde</label>
+                        <input id="discountStartDate" type="date" class="form-control"
+                          formControlName="discountStartDate" />
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label for="discountEndDate" class="form-label">Hasta</label>
+                        <input id="discountEndDate" type="date" class="form-control"
+                          formControlName="discountEndDate" />
+                        <div class="invalid-feedback d-block">{{ getErrorMessage('discountEndDate') }}</div>
+                      </div>
+                    </div>
+
+                    <div class="alert alert-info py-2" *ngIf="productForm.get('price').value">
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <div>
+                          <small class="text-muted d-block">Precio final</small>
+                          <strong>{{ (productForm.get('discountPrice').value || productForm.get('price').value) |
+                            currency }}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="card shadow-sm h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-muted text-uppercase mb-3">Inventario</h5>
+                    <div class="row">
+                      <div class="col-6 mb-3">
+                        <label for="stock" class="form-label">Stock <span class="text-danger">*</span></label>
+                        <input id="stock" type="number" class="form-control" formControlName="stock" min="0"
+                          [ngClass]="{'is-invalid': productForm.get('stock').invalid && productForm.get('stock').touched}" />
+                        <div class="invalid-feedback">{{ getErrorMessage('stock') }}</div>
+                      </div>
+                      <div class="col-6 mb-3">
+                        <label for="minStock" class="form-label">Stock mínimo</label>
+                        <input id="minStock" type="number" class="form-control" formControlName="minStock" min="0" />
+                      </div>
+                    </div>
+
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="isActive" formControlName="isActive" />
+                      <label class="form-check-label" for="isActive">Activo</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="card shadow-sm h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-muted text-uppercase mb-3">Dimensiones y peso</h5>
+                    <div class="mb-3">
+                      <label for="weight" class="form-label">Peso (kg)</label>
+                      <input id="weight" type="number" class="form-control" formControlName="weight" min="0"
+                        step="0.01" />
+                    </div>
+                    <div formGroupName="dimensions" class="row">
+                      <div class="col-4 mb-3">
+                        <label for="length" class="form-label">Largo (cm)</label>
+                        <input id="length" type="number" class="form-control" formControlName="length" min="0"
+                          step="0.1" />
+                      </div>
+                      <div class="col-4 mb-3">
+                        <label for="width" class="form-label">Ancho (cm)</label>
+                        <input id="width" type="number" class="form-control" formControlName="width" min="0"
+                          step="0.1" />
+                      </div>
+                      <div class="col-4 mb-3">
+                        <label for="height" class="form-label">Alto (cm)</label>
+                        <input id="height" type="number" class="form-control" formControlName="height" min="0"
+                          step="0.1" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="card shadow-sm h-100">
+                  <div class="card-body">
+                    <h5 class="card-title text-muted text-uppercase mb-3">Imágenes</h5>
+                    <div class="mb-3">
+                      <input type="file" class="form-control" multiple accept="image/*"
+                        (change)="onFileSelected($event)" />
+                      <small class="text-muted">Formatos permitidos: JPG, PNG, WebP. Máx 5MB por imagen.</small>
+                    </div>
+                    <div class="row g-3">
+                      <div class="col-6 col-md-3 col-lg-2" *ngFor="let url of imagePreviewUrls; let i = index">
+                        <div class="image-preview">
+                          <img [src]="url" class="img-fluid rounded" alt="preview" />
+                          <button type="button" class="btn btn-sm btn-danger remove-image" (click)="removeImage(i)">
+                            <i class="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Cancelar</button>
+                  <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || loading">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                      aria-hidden="true"></span>
+                    {{ isEditMode ? 'Actualizar' : 'Crear' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="price">Precio</label>
-      <input
-        id="price"
-        type="number"
-        class="form-control"
-        formControlName="price"
-        placeholder="Precio del producto"
-      />
-    </div>
-    <div class="form-group">
-      <label for="description">Descripción</label>
-      <textarea
-        id="description"
-        class="form-control"
-        formControlName="description"
-        placeholder="Descripción del producto"
-      ></textarea>
-    </div>
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="productForm.invalid"
-    >
-      {{ isEditMode ? "Actualizar" : "Crear" }}
-    </button>
-  </form>
+  </div>
 </div>

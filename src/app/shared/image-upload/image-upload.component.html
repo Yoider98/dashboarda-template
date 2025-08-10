@@ -1,0 +1,108 @@
+<div class="image-upload-container">
+    <!-- Zona de subida -->
+    <div class="upload-zone" [class.drag-over]="isDragOver" [class.disabled]="!canAddMore()"
+        (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+        (click)="fileInput.click()">
+        <div class="upload-content">
+            <div class="upload-icon" *ngIf="!loading">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <div class="loading-spinner" *ngIf="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+
+            <h5 class="upload-title">
+                {{ canAddMore() ? 'Subir Imágenes' : 'Límite de imágenes alcanzado' }}
+            </h5>
+
+            <p class="upload-description" *ngIf="canAddMore()">
+                Arrastra y suelta imágenes aquí o haz clic para seleccionar
+            </p>
+
+            <div class="upload-info">
+                <small class="text-muted">
+                    Formatos: {{ acceptedTypes.join(', ') | replace: 'image/': '' | uppercase }}
+                </small>
+                <br>
+                <small class="text-muted">
+                    Máximo: {{ maxFileSize | fileSize }} por imagen
+                </small>
+                <br>
+                <small class="text-muted">
+                    {{ images.length }}/{{ maxFiles }} imágenes
+                </small>
+            </div>
+        </div>
+
+        <input #fileInput type="file" [multiple]="multiple" [accept]="acceptedTypes.join(',')"
+            (change)="onFileSelected($event)" style="display: none;" [disabled]="!canAddMore()" />
+    </div>
+
+    <!-- Vista previa de imágenes -->
+    <div class="image-preview-container" *ngIf="showPreview && images.length > 0">
+        <h6 class="preview-title">
+            <i class="fas fa-images me-2"></i>
+            Imágenes ({{ images.length }})
+        </h6>
+
+        <div class="image-grid">
+            <div class="image-item" *ngFor="let image of images; let i = index" [class.main-image]="i === 0">
+                <div class="image-wrapper">
+                    <img [src]="image.preview" [alt]="image.name" class="preview-image"
+                        (error)="onImageError($event)" />
+
+                    <!-- Overlay con controles -->
+                    <div class="image-overlay">
+                        <div class="image-controls">
+                            <button type="button" class="btn btn-sm btn-primary" *ngIf="i !== 0"
+                                (click)="setMainImage(i)" title="Establecer como imagen principal">
+                                <i class="fas fa-star"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-sm btn-danger" (click)="removeImage(i)"
+                                title="Eliminar imagen">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Badge de imagen principal -->
+                    <div class="main-badge" *ngIf="i === 0">
+                        <i class="fas fa-star"></i>
+                        Principal
+                    </div>
+
+                    <!-- Badge de estado -->
+                    <div class="status-badge" *ngIf="image.uploaded">
+                        <i class="fas fa-check"></i>
+                        Subida
+                    </div>
+                </div>
+
+                <div class="image-info">
+                    <small class="image-name">{{ image.name }}</small>
+                    <small class="image-size">{{ image.size | fileSize }}</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles adicionales -->
+        <div class="image-controls-footer" *ngIf="images.length > 1">
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="clearImages()">
+                <i class="fas fa-trash me-1"></i>
+                Limpiar todas
+            </button>
+
+            <small class="text-muted ms-3">
+                <i class="fas fa-info-circle me-1"></i>
+                Arrastra las imágenes para reordenarlas
+            </small>
+        </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div class="error-message" *ngIf="!canAddMore()">
+        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+        Has alcanzado el límite máximo de {{ maxFiles }} imágenes
+    </div>
+</div>

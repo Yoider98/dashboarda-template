@@ -1,43 +1,94 @@
 <div class="container-fluid">
   <div class="row">
-    <!-- Sidebar -->
-    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-      <div class="sidebar-sticky">
-        <h5 class="text-center mt-3">Menú</h5>
+    <!-- Sidebar desktop -->
+    <nav class="d-none d-lg-block bg-light sidebar" [class.col-lg-2]="!isSidebarCollapsed"
+      [class.col-lg-1]="isSidebarCollapsed" [class.collapsed]="isSidebarCollapsed">
+      <div class="sidebar-sticky py-3 ">
+        <button type="button" class="btn btn-sm btn-outline-secondary sidebar-toggle d-none d-lg-inline-flex"
+          (click)="toggleSidebar()" [attr.aria-label]="isSidebarCollapsed ? 'Expandir menú' : 'Contraer menú'">
+          <i class="fas" [class.fa-angle-right]="isSidebarCollapsed" [class.fa-angle-left]="!isSidebarCollapsed"></i>
+        </button>
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="/dashboard"
-              routerLinkActive="active"
-            >
-              <i class="fas fa-home"></i> Inicio
+            <a class="nav-link d-flex align-items-center" routerLink="/dashboard" routerLinkActive="active">
+              <i class="fas fa-home me-2"></i>
+              <span>Inicio</span>
             </a>
           </li>
           <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="/dashboard/products"
-              routerLinkActive="active"
-            >
-              <i class="fas fa-box"></i> Productos
+            <a class="nav-link d-flex align-items-center" routerLink="/dashboard/products" routerLinkActive="active">
+              <i class="fas fa-box me-2"></i>
+              <span>Productos</span>
             </a>
           </li>
           <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="/dashboard/users"
-              routerLinkActive="active"
-            >
-              <i class="fas fa-users"></i> Usuarios
+            <a class="nav-link d-flex align-items-center" routerLink="/dashboard/discounts" routerLinkActive="active">
+              <i class="fas fa-tags me-2"></i>
+              <span>Descuentos</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" routerLink="/dashboard/users" routerLinkActive="active">
+              <i class="fas fa-users me-2"></i>
+              <span>Usuarios</span>
             </a>
           </li>
         </ul>
       </div>
     </nav>
 
+    <!-- Offcanvas sidebar mobile -->
+    <div class="d-lg-none">
+      <button class="btn btn-outline-secondary btn-sm my-3 ms-3" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+        <i class="fas fa-bars me-2"></i>Menú
+      </button>
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar"
+        aria-labelledby="offcanvasSidebarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menú</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center" routerLink="/dashboard" routerLinkActive="active"
+                data-bs-dismiss="offcanvas">
+                <i class="fas fa-home me-2"></i>
+                <span>Inicio</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center" routerLink="/dashboard/products" routerLinkActive="active"
+                data-bs-dismiss="offcanvas">
+                <i class="fas fa-box me-2"></i>
+                <span>Productos</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center" routerLink="/dashboard/discounts" routerLinkActive="active"
+                data-bs-dismiss="offcanvas">
+                <i class="fas fa-tags me-2"></i>
+                <span>Descuentos</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center" routerLink="/dashboard/users" routerLinkActive="active"
+                data-bs-dismiss="offcanvas">
+                <i class="fas fa-users me-2"></i>
+                <span>Usuarios</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <main role="main" class="px-3 px-lg-4" [class.col-lg-10]="!isSidebarCollapsed"
+      [class.col-lg-11]="isSidebarCollapsed">
+      <div class="d-none d-lg-flex align-items-center mb-3">
+      </div>
       <router-outlet></router-outlet>
     </main>
   </div>
